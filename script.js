@@ -30,7 +30,7 @@ const deleteTransaction = async (id) => {
 
 const addTransaction = async (newTransaction) => {
   try {
-    const response = fetch(url, {
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -40,6 +40,7 @@ const addTransaction = async (newTransaction) => {
     if (!response.ok) {
       throw new Error("Error adding transaction");
     }
+    loadTransactions();
   } catch (err) {
     console.log(err);
   }
@@ -119,7 +120,6 @@ add.addEventListener("click", (e) => {
     console.log("All fields are required.");
     return;
   }
-
   addTransaction(newTransaction);
 });
 
