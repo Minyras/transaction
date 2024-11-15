@@ -1,48 +1,81 @@
-// let container = document.querySelector(".transaction-container");
-const deleteBtn = document.querySelector(".delete");
 const container = document.querySelector(".transaction-container");
-
 const url = "https://acb-api.algoritmika.org/api/transaction";
-// fetch(url)
-//   .then((res) => res.json())
-//   .then((data) => console.log(data));
 
 const getAllTransaction = async () => {
-  let response = await fetch(url);
-  if (!response.ok) {
-    throw new Error("error");
-  }
-  let res = await response.json();
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("Error fetching transactions");
+  const res = await response.json();
   return res;
 };
 
 const deleteTransaction = async (id) => {
-  fetch(`${url}/${id}`, {
-    method: "DELETE",
+  try {
+    const response = await fetch(`${url}/${id}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) throw new Error("Error deleting transaction");
+    loadTransactions();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const createTransactionCard = (transaction) => {
+  const card = document.createElement("div");
+  card.classList.add("card");
+
+  const information = document.createElement("div");
+  information.classList.add("information");
+
+  const from = document.createElement("p");
+  from.classList.add("from");
+  from.textContent = `From: ${transaction.from}`;
+
+  const to = document.createElement("p");
+  to.classList.add("to");
+  to.textContent = `To: ${transaction.to}`;
+
+  const amount = document.createElement("p");
+  amount.classList.add("amount");
+  amount.textContent = `Amount: ${transaction.amount}`;
+
+  information.appendChild(from);
+  information.appendChild(to);
+  information.appendChild(amount);
+
+  const buttons = document.createElement("div");
+  buttons.classList.add("buttons");
+
+  const editBtn = document.createElement("button");
+  editBtn.classList.add("edit");
+  const editSvg = document.createElement("img");
+  editSvg.src = "/transaction/assets/svg/edit.svg";
+  editBtn.appendChild(editSvg);
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("delete");
+  const deleteSvg = document.createElement("img");
+  deleteSvg.src = "/transaction/assets/svg/delete.svg";
+  deleteBtn.appendChild(deleteSvg);
+
+  deleteBtn.addEventListener("click", () => deleteTransaction(transaction.id));
+
+  buttons.appendChild(editBtn);
+  buttons.appendChild(deleteBtn);
+
+  card.appendChild(information);
+  card.appendChild(buttons);
+
+  return card;
+};
+
+const loadTransactions = async () => {
+  const data = await getAllTransaction();
+  container.innerHTML = "";
+  data.forEach((transaction) => {
+    const card = createTransactionCard(transaction);
+    container.appendChild(card);
   });
 };
 
-// deleteBtn.addEventListener("click", deleteTransaction);
-getAllTransaction()
-  .then((data) => {
-    container.innerHTML = "";
-    console.log(data);
-    data.forEach((data) => {
-      const card = document.createElement("div");
-      card.classList.add("card");
-      container.appendChild(card);
-      const from = document.createElement("p");
-      const to = document.createElement("p");
-      const amount = document.createElement("p");
-      from.classList.add("from");
-      to.classList.add("to");
-      amount.classList.add("amount");
-      card.appendChild(from);
-      card.appendChild(to);
-      card.appendChild(amount);
-      from.textContent = `From: ${data.from}`;
-      to.textContent = `To: ${data.to}`;
-      amount.textContent = `Amount: ${data.amount}`;
-    });
-  })
-  .catch((err) => console.log(err));
+loadTransactions();
