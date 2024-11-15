@@ -14,11 +14,7 @@ cancel.addEventListener("click", () => {
   container.style.opacity = "1";
   container.style.filter = "blur(0px)";
 });
-addTransactionBtn.addEventListener("click", () => {
-  modal.style.display = "flex";
-  container.style.opacity = "0.5";
-  container.style.filter = "blur(5px)";
-});
+
 const getAllTransaction = async () => {
   try {
     const response = await fetch(url);
@@ -169,6 +165,15 @@ add.addEventListener("click", (e) => {
   modal.style.display = "none";
   container.style.opacity = "1";
   container.style.filter = "blur(0px)";
+});
+addTransactionBtn.addEventListener("click", () => {
+  modal.style.display = "flex";
+  container.style.opacity = "0.5";
+  container.style.filter = "blur(5px)";
+  editingTransactionId = null;
+  fromInput.value = "";
+  toInput.value = "";
+  amountInput.value = "";
 });
 
 loadTransactions();
