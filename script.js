@@ -119,7 +119,10 @@ const createTransactionCard = (transaction) => {
   deleteSvg.src = "/transaction/assets/svg/delete.svg";
   deleteBtn.appendChild(deleteSvg);
 
-  deleteBtn.addEventListener("click", () => deleteTransaction(transaction.id));
+  deleteBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    deleteTransaction(transaction.id);
+  });
 
   buttons.appendChild(editBtn);
   buttons.appendChild(deleteBtn);
