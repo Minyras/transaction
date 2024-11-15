@@ -1,0 +1,60 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+
+.add {
+  align-self: flex-end;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+}
+
+.transaction-container {
+  margin-top: 40px;
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+.card {
+  padding: 20px;
+  border: 1px solid black;
+  width: 200px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.information {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.information p {
+  font-size: 20px;
+}
+.buttons {
+  align-self: flex-end;
+}
+.buttons button {
+  background-color: transparent;
+  border: none;
+}
+.edit img {
+  width: 20px;
+  margin-right: 10px;
+}
+.delete img {
+  width: 14px;
+}
