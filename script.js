@@ -1,11 +1,19 @@
 const container = document.querySelector(".transaction-container");
 const url = "https://acb-api.algoritmika.org/api/transaction";
+const add = document.querySelector(".add");
+let fromInput = document.querySelector(".from-input");
+let toInput = document.querySelector(".to-input");
+let amountInput = document.querySelector(".amount-input");
 
 const getAllTransaction = async () => {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error("Error fetching transactions");
-  const res = await response.json();
-  return res;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Error fetching transactions");
+    const res = await response.json();
+    return res;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const deleteTransaction = async (id) => {
@@ -17,6 +25,23 @@ const deleteTransaction = async (id) => {
     loadTransactions();
   } catch (err) {
     console.error(err);
+  }
+};
+
+const addTransaction = async (newTransaction) => {
+  try {
+    const response = fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newTransaction),
+    });
+    if (!response.ok) {
+      throw new Error("Error adding transaction");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -37,7 +62,7 @@ const createTransactionCard = (transaction) => {
 
   const amount = document.createElement("p");
   amount.classList.add("amount");
-  amount.textContent = `Amount: ${transaction.amount}`;
+  amount.textContent = `Amount: ${transaction.amount}$`;
 
   information.appendChild(from);
   information.appendChild(to);
@@ -77,5 +102,25 @@ const loadTransactions = async () => {
     container.appendChild(card);
   });
 };
+
+add.addEventListener("click", (e) => {
+  e.preventDefault();
+  console.log(fromInput.value);
+  console.log(toInput.value);
+  console.log(amountInput.value);
+
+  const newTransaction = {
+    from: fromInput.value,
+    to: toInput.value,
+    amount: Number(amountInput.value),
+  };
+
+  if (!newTransaction.from || !newTransaction.to || !newTransaction.amount) {
+    console.log("All fields are required.");
+    return;
+  }
+
+  addTransaction(newTransaction);
+});
 
 loadTransactions();
