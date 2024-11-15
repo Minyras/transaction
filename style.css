@@ -10,7 +10,7 @@
   padding: 40px;
 }
 
-.add {
+.add-transaction {
   align-self: flex-end;
   padding: 10px 20px;
   font-size: 18px;
@@ -58,3 +58,59 @@
 .delete img {
   width: 14px;
 }
+.cancel {
+  width: 14px;
+  margin-bottom: 20px;
+  align-self: flex-end;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.modal button.add {
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #e52e2f;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal button.add:hover {
+  background-color: #0056b3;
+}
+/* 
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+} */

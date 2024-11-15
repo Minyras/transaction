@@ -1,10 +1,24 @@
 const container = document.querySelector(".transaction-container");
 const url = "https://acb-api.algoritmika.org/api/transaction";
 const add = document.querySelector(".add");
+const modal = document.querySelector(".modal");
+const addTransactionBtn = document.querySelector(".add-transaction");
+const cancel = document.querySelector(".cancel");
 let fromInput = document.querySelector(".from-input");
 let toInput = document.querySelector(".to-input");
 let amountInput = document.querySelector(".amount-input");
-
+let editingTransactionId = null;
+modal.style.display = "none";
+cancel.addEventListener("click", () => {
+  modal.style.display = "none";
+  container.style.opacity = "1";
+  container.style.filter = "blur(0px)";
+});
+addTransactionBtn.addEventListener("click", () => {
+  modal.style.display = "flex";
+  container.style.opacity = "0.5";
+  container.style.filter = "blur(5px)";
+});
 const getAllTransaction = async () => {
   try {
     const response = await fetch(url);
@@ -45,7 +59,32 @@ const addTransaction = async (newTransaction) => {
     console.log(err);
   }
 };
-
+const editTransaction = async (id, newTransaction) => {
+  try {
+    const response = await fetch(`${url}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newTransaction),
+    });
+    if (!response.ok) {
+      throw new Error("Error adding transaction");
+    }
+    loadTransactions();
+  } catch (err) {
+    console.log(err);
+  }
+};
+const editModal = (transaction) => {
+  modal.style.display = "flex";
+  container.style.opacity = "0.5";
+  container.style.filter = "blur(5px)";
+  fromInput.value = transaction.from;
+  toInput.value = transaction.to;
+  amountInput.value = transaction.amount;
+  editingTransactionId = transaction.id;
+};
 const createTransactionCard = (transaction) => {
   const card = document.createElement("div");
   card.classList.add("card");
@@ -77,7 +116,7 @@ const createTransactionCard = (transaction) => {
   const editSvg = document.createElement("img");
   editSvg.src = "/transaction/assets/svg/edit.svg";
   editBtn.appendChild(editSvg);
-
+  editBtn.addEventListener("click", () => editModal(transaction));
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("delete");
   const deleteSvg = document.createElement("img");
@@ -97,6 +136,7 @@ const createTransactionCard = (transaction) => {
 
 const loadTransactions = async () => {
   const data = await getAllTransaction();
+  console.log(data);
   container.innerHTML = "";
   data.forEach((transaction) => {
     const card = createTransactionCard(transaction);
@@ -120,7 +160,15 @@ add.addEventListener("click", (e) => {
     console.log("All fields are required.");
     return;
   }
-  addTransaction(newTransaction);
+  if (editingTransactionId) {
+    editTransaction(editingTransactionId, newTransaction);
+  } else {
+    addTransaction(newTransaction);
+  }
+
+  modal.style.display = "none";
+  container.style.opacity = "1";
+  container.style.filter = "blur(0px)";
 });
 
 loadTransactions();
