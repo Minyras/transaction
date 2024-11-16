@@ -160,7 +160,7 @@ const createTransactionCard = (transaction) => {
 
 const loadTransactions = async () => {
   const data = await getAllTransaction();
-  console.log(data);
+  console.log(data.reverse());
   container.innerHTML = "";
   data.forEach((transaction) => {
     const card = createTransactionCard(transaction);
