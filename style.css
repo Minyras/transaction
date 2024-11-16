@@ -8,6 +8,7 @@
   flex-direction: column;
   align-items: center;
   padding: 40px;
+  overflow: hidden;
 }
 
 .add-transaction {
@@ -16,29 +17,41 @@
   font-size: 18px;
   border-radius: 10px;
   border: none;
+  background-color: #e52e2f;
+  color: white;
 }
 
 .transaction-container {
+  /* border: 1px solid gray; */
+  border-radius: 10px;
   margin-top: 40px;
   width: 80%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  /* display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* gap: 20px; */
+  overflow-y: auto;
+  height: 80%;
+  padding: 0 15px 0 0;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
 }
 .card {
   padding: 20px;
-  border: 1px solid black;
-  width: 200px;
-  height: 250px;
+  /* border: 1px solid black; */
+  width: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
 }
-
+.information-title {
+  padding: 20px;
+}
 .information {
   display: flex;
-  flex-direction: column;
   gap: 20px;
+  width: 80%;
+  justify-content: space-between;
 }
 
 .information p {
@@ -56,7 +69,7 @@
   margin-right: 10px;
 }
 .delete img {
-  width: 14px;
+  width: 16px;
 }
 .cancel {
   width: 14px;
@@ -64,7 +77,8 @@
   align-self: flex-end;
 }
 
-.modal {
+.modal,
+.pop-up {
   display: none;
   position: fixed;
   display: flex;
@@ -78,6 +92,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
   z-index: 1000;
+  transition: 1s ease-in-out;
 }
 
 .modal input {
@@ -98,4 +113,19 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+.pop-up {
+  width: 400px;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.check {
+  width: 17px;
+}
+
+.x {
+  width: 13px;
+  margin-right: 20px;
 }

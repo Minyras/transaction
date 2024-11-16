@@ -9,17 +9,25 @@
   <body>
     <div class="container">
       <button class="add-transaction">add transaction</button>
-
       <div class="transaction-container">
         <div class="card"></div>
       </div>
-      <div class="modal">
+
+      <div class="pop-up">
+        <p>Are you sure you want to delete the transaction?</p>
+        <div class="buttons">
+          <img class="x" src="./assets/svg/delete.svg" alt="delete" />
+          <img class="check" src="./assets/svg/check.svg" alt="check" />
+        </div>
+      </div>
+
+      <form class="modal">
         <img class="cancel" src="./assets/svg/delete.svg" alt="" />
         <input class="from-input" type="text" placeholder="from" />
         <input class="to-input" type="text" placeholder="to" />
         <input class="amount-input" type="text" placeholder="amount" />
         <button class="add">add new transaction</button>
-      </div>
+      </form>
     </div>
   </body>
   <script src="./script.js"></script>

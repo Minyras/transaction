@@ -4,15 +4,35 @@ const add = document.querySelector(".add");
 const modal = document.querySelector(".modal");
 const addTransactionBtn = document.querySelector(".add-transaction");
 const cancel = document.querySelector(".cancel");
+const x = document.querySelector(".x");
+const check = document.querySelector(".check");
+const popUp = document.querySelector(".pop-up");
 let fromInput = document.querySelector(".from-input");
 let toInput = document.querySelector(".to-input");
 let amountInput = document.querySelector(".amount-input");
+let transactionDeleteId = null;
 let editingTransactionId = null;
+const toggleButtons = (disable) => {
+  const allButtons = document.querySelectorAll(
+    ".edit, .delete ,.add-transaction"
+  );
+  allButtons.forEach((btn) => {
+    btn.disabled = disable;
+  });
+};
+popUp.style.display = "none";
 modal.style.display = "none";
 cancel.addEventListener("click", () => {
   modal.style.display = "none";
   container.style.opacity = "1";
   container.style.filter = "blur(0px)";
+  toggleButtons(false);
+});
+x.addEventListener("click", () => {
+  popUp.style.display = "none";
+  container.style.opacity = "1";
+  container.style.filter = "blur(0px)";
+  toggleButtons(false);
 });
 
 const getAllTransaction = async () => {
@@ -98,8 +118,7 @@ const createTransactionCard = (transaction) => {
 
   const amount = document.createElement("p");
   amount.classList.add("amount");
-  amount.textContent = `Amount: ${transaction.amount}$`;
-
+  amount.innerHTML = `Amount: <span>${transaction.amount}</span> $`;
   information.appendChild(from);
   information.appendChild(to);
   information.appendChild(amount);
@@ -112,18 +131,24 @@ const createTransactionCard = (transaction) => {
   const editSvg = document.createElement("img");
   editSvg.src = "/transaction/assets/svg/edit.svg";
   editBtn.appendChild(editSvg);
-  editBtn.addEventListener("click", () => editModal(transaction));
+  editBtn.addEventListener("click", () => {
+    toggleButtons(true);
+    editModal(transaction);
+  });
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("delete");
   const deleteSvg = document.createElement("img");
-  deleteSvg.src = "/transaction/assets/svg/delete.svg";
+  deleteSvg.src = "/transaction/assets/svg/trash.svg";
   deleteBtn.appendChild(deleteSvg);
 
   deleteBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    deleteTransaction(transaction.id);
+    toggleButtons(true);
+    popUp.style.display = "flex";
+    container.style.opacity = "0.5";
+    container.style.filter = "blur(5px)";
+    transactionDeleteId = transaction.id;
   });
-
   buttons.appendChild(editBtn);
   buttons.appendChild(deleteBtn);
 
@@ -161,6 +186,7 @@ add.addEventListener("click", (e) => {
   }
   if (editingTransactionId) {
     editTransaction(editingTransactionId, newTransaction);
+    toggleButtons(false);
   } else {
     addTransaction(newTransaction);
   }
@@ -177,6 +203,15 @@ addTransactionBtn.addEventListener("click", () => {
   fromInput.value = "";
   toInput.value = "";
   amountInput.value = "";
+});
+check.addEventListener("click", (e) => {
+  e.preventDefault();
+  deleteTransaction(transactionDeleteId);
+  transactionDeleteId = null;
+  popUp.style.display = "none";
+  container.style.opacity = "1";
+  container.style.filter = "blur(0px)";
+  toggleButtons(false);
 });
 
 loadTransactions();
