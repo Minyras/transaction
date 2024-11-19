@@ -55,6 +55,7 @@
 }
 
 .information p {
+  width: 20%;
   font-size: 20px;
 }
 .buttons {
@@ -92,7 +93,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
   z-index: 1000;
-  transition: 1s ease-in-out;
+  transition: all 1s ease-in-out;
 }
 
 .modal input {
